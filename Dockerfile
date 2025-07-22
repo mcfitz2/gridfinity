@@ -10,7 +10,7 @@ RUN apk add --no-cache \
 
 # Install Python dependencies
 COPY builder/requirements.txt /tmp/requirements.txt
-RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages -r /tmp/requirements.txt
 
 # Set the working directory
 WORKDIR /workspace
