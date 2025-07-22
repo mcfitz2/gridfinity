@@ -80,8 +80,8 @@ holesaw_arbors:
   cylinder_height: 20
 
 4.5_clr_die:
-  num_bases_x: 5
-  num_bases_y: 5
+  num_bases_x: 6
+  num_bases_y: 6
   bin_height: 4
   linear_divisions_x: 0
   linear_divisions_y: 0
