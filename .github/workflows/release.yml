@@ -49,5 +49,5 @@ jobs:
           git config --global user.email "$GIT_AUTHOR_EMAIL"
           git add dist/*.stl
           git commit -m "Add generated STL files to dist [skip ci]" || echo "No changes to commit"
-          git remote set-url origin https://x-access-token:${PAT_PUSH}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://mcfitz2:${PAT_PUSH}@github.com/${{ github.repository }}.git
           git push origin HEAD:${GITHUB_REF#refs/heads/}
