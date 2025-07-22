@@ -39,12 +39,13 @@ jobs:
 
       - name: Push STL files to dist/
         env:
-          GIT_AUTHOR_NAME: Micah Fitzgerald
-          GIT_AUTHOR_EMAIL: mcfitz2@users.noreply.github.com
-          PAT_PUSH: ${{ secrets.PAT_PUSH }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+          PUSH_PAT: ${{ secrets.PUSH_PAT }}
         run: |
           git config --global user.name "$GIT_AUTHOR_NAME"
           git config --global user.email "$GIT_AUTHOR_EMAIL"
           git add dist/*.stl
           git commit -m "Add generated STL files to dist [skip ci]" || echo "No changes to commit"
-          git push
+          git remote set-url origin https://mcfitz2:${PUSH_PAT}@github.com/${{ github.repository }}.git
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
