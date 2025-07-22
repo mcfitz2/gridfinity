@@ -10,14 +10,14 @@ defaults:
   lip_style: 2
   scoop_weight: 1
   corner_holes_only: false
-  use_refined_hole_style: true
+  use_refined_hole_style: false
   enable_magnet_holes: false
   enable_screw_holes: false
   magnet_crush_ribs: true
   hole_chamfer: true
   printable_hole_top: true
   enable_thumbscrew_hole: false
-  
+
 holesaw_1.5x4.0:
   num_bases_x: 1
   num_bases_y: 3
@@ -66,3 +66,27 @@ holesaw_arbors:
   cylinder_diameter: 10
   cylinder_height: 20
   cylinder_spacing_to_lid: 10
+
+3.5_clr_die:
+  num_bases_x: 5
+  num_bases_y: 5
+  bin_height: 4
+  linear_divisions_x: 0
+  linear_divisions_y: 0
+  cylindrical_divisions_x: 1
+  cylindrical_divisions_y: 1
+  cylinder_orientation: 2
+  cylinder_diameter: 180
+  cylinder_height: 20
+
+4.5_clr_die:
+  num_bases_x: 5
+  num_bases_y: 5
+  bin_height: 4
+  linear_divisions_x: 0
+  linear_divisions_y: 0
+  cylindrical_divisions_x: 1
+  cylindrical_divisions_y: 1
+  cylinder_orientation: 2
+  cylinder_diameter: 230
+  cylinder_height: 20
