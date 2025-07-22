@@ -174,7 +174,7 @@ def yaml_to_openscad_cmd(yaml_path, bin_key):
                 value = str(value).lower()
             assignments.append(f'-D{openscad_var}={value}')
 
-    return f'openscad {' '.join(assignments)} -o {bin_key}.stl {get_scad_directory()}/gridfinity-rebuilt-bins.scad'
+    return f"openscad {' '.join(assignments)} -o {bin_key}.stl {get_scad_directory()}/gridfinity-rebuilt-bins.scad"
 
 
 
