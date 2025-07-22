@@ -1,6 +1,8 @@
 import subprocess
 import yaml
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 openscad_variable_map = {
     "gridx": {
         "friendly_name": "num_bases_x",
@@ -151,6 +153,7 @@ def get_script_directory():
 def get_scad_directory():
     script_dir = get_script_directory()
     return os.path.join(os.path.dirname(script_dir), 'gridfinity-rebuilt-openscad')
+
 def yaml_to_openscad_cmd(yaml_path, bin_key):
     with open(yaml_path, 'r') as f:
         data = yaml.safe_load(f)
@@ -176,8 +179,6 @@ def yaml_to_openscad_cmd(yaml_path, bin_key):
 
     return f"openscad {' '.join(assignments)} -o {bin_key}.stl {get_scad_directory()}/gridfinity-rebuilt-bins.scad"
 
-
-
 def all_bins_to_openscad_cmds(yaml_path):
     with open(yaml_path, 'r') as f:
         data = yaml.safe_load(f)
@@ -188,17 +189,32 @@ def all_bins_to_openscad_cmds(yaml_path):
         cmds[bin_key] = yaml_to_openscad_cmd(yaml_path, bin_key)
     return cmds
 
-def run_all_bins(yaml_path):
+def run_all_bins(yaml_path, max_workers=4):
     cmds = all_bins_to_openscad_cmds(yaml_path)
-    for bin_key, cmd in cmds.items():
+    results = {}
+
+    def run_cmd(bin_key, cmd):
         print(f"Running: {cmd}")
         result = subprocess.run(cmd, shell=True)
-        if result.returncode != 0:
-            print(f"Error running command for {bin_key}: {cmd}")
+        return bin_key, result.returncode
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_bin = {executor.submit(run_cmd, bin_key, cmd): bin_key for bin_key, cmd in cmds.items()}
+        for future in as_completed(future_to_bin):
+            bin_key = future_to_bin[future]
+            try:
+                bin_key, returncode = future.result()
+                results[bin_key] = returncode
+                if returncode != 0:
+                    print(f"Error running command for {bin_key}")
+            except Exception as exc:
+                print(f"Exception for {bin_key}: {exc}")
+                results[bin_key] = -1
+    return results
 
 if __name__ == "__main__":
-    import yaml
     import sys
 
     yaml_path = sys.argv[1]
-    run_all_bins(yaml_path)
+    max_workers = int(sys.argv[2]) if len(sys.argv) > 2 else 4
+    run_all_bins(yaml_path, max_workers)
