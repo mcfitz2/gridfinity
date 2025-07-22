@@ -90,3 +90,15 @@ holesaw_arbors:
   cylinder_orientation: 2
   cylinder_diameter: 230
   cylinder_height: 20
+
+notcher_arbor:
+  num_bases_x: 1
+  num_bases_y: 8
+  bin_height: 4
+  linear_divisions_x: 0
+  linear_divisions_y: 0
+  cylindrical_divisions_x: 1
+  cylindrical_divisions_y: 1
+  cylinder_orientation: 1
+  cylinder_diameter: 28
+  cylinder_height: 305
