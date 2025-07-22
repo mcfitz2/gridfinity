@@ -1,0 +1,60 @@
+name: Build and Release Gridfinity STLs
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t gridfinity-builder .
+
+      - name: Run variables.py to generate STL files
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace gridfinity-builder \
+            python3 /workspace/builder/variables.py /workspace/bins.yaml
+
+      - name: Find STL files
+        id: stlfiles
+        run: |
+          find . -name "*.stl" > stl_list.txt
+
+      - name: Upload STL artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gridfinity-stls
+          path: |
+            **/*.stl
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Download STL artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: gridfinity-stls
+          path: stls
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: stls/**/*.stl
