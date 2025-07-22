@@ -37,7 +37,7 @@ jobs:
       - name: Run variables.py to generate STL files into dist/
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace gridfinity-builder \
-            bash -c "cd /workspace && python3 builder/variables.py bins.yaml && mv *.stl dist/ || true"
+            sh -c "cd /workspace && python3 builder/variables.py bins.yaml && mv *.stl dist/ || true"
 
       - name: Push STL files to dist/
         env:
