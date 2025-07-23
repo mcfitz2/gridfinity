@@ -34,7 +34,7 @@ jobs:
       - name: Run build.sh in Docker to generate STL files
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace gridfinity-builder \
-            sh -c "cd /workspace && chmod +x build.sh && build.sh"
+            sh -c "cd /workspace && chmod +x /workspace/build.sh && /workspace/build.sh"
 
       - name: Push STL files to dist/
         env:
