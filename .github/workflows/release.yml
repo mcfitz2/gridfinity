@@ -33,9 +33,7 @@ jobs:
 
       - name: Run build.sh in Docker to generate STL files
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace gridfinity-builder \
-            sh -c "cd /workspace && chmod +x ./build.sh && ./build.sh"
-
+          docker run --rm -v ${{ github.workspace }}:/workspace gridfinity-builder
       - name: Push STL files to dist/
         env:
           GIT_AUTHOR_NAME: Micah Fitzgerald

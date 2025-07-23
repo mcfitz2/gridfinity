@@ -10,6 +10,6 @@ RUN apk add --no-cache \
 
 # Set the working directory
 WORKDIR /workspace
-
+ADD build.sh /workspace/build.sh
 # Default command (can be overridden)
-CMD ["sh"]
+CMD ["build.sh"]
